@@ -7,6 +7,10 @@ http.createServer(function (req, res) {
 
     command = "";
 
+    if (url.pathname === '/html') {
+	command = "html.ss";
+    }
+
     if (url.pathname === '/insert') {
         //http://192.168.56.21/insert?db=data-01&id=1&name=Tom&password=123456
         console.log(url.pathname);
@@ -37,7 +41,7 @@ http.createServer(function (req, res) {
             }
         }
 
-        command += "insert.ss " + db + " " + id + " " + name + " " + password;
+        command = "insert.ss " + db + " " + id + " " + name + " " + password;
         console.log(command);
     }
 
@@ -50,9 +54,10 @@ http.createServer(function (req, res) {
             var content = "";
 
 	    if (error === null) {
-		content = "Success in inserting a record!"
+		//content = "Success in inserting a record!"
+		content = stdout;
 	    }
-            res.writeHead(200, {'Content-Type': 'text/plain'});
+            res.writeHead(200, {'Content-Type': 'text/html'});
             res.end(content + '\n');
         });
     }
