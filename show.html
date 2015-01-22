@@ -1,0 +1,17 @@
+<html>
+<body>
+<head>
+<meta charset="utf-8">
+</head>
+<script>
+function Play(soundobj) {
+var thissound=document.getElementById(soundobj);thissound.play();
+}
+</script>
+<audio controls='controls' hidden='true' id='hello'>
+<source src='http://www.oxfordlearnersdictionaries.com/media/english/uk_pron/h/hel/hello/hello__gb_1.mp3' type='audio/mpeg'>
+Your browser does not support the audio element.
+</audio>
+<a href="javascript:Play('hello')">hello</a>
+</body>
+</html>

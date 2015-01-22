@@ -77,6 +77,12 @@ http.createServer(function (req, res) {
 	}
     });
 
+    if (url.pathname === '/file') {
+	console.log(url.query);
+	filename = url.query;
+	command = "file.ss /root/workspace/proxy-node/" + filename;
+    }
+
     if (url.pathname === '/create'){
 	command = "create.ss"
     }
