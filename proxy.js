@@ -51,7 +51,7 @@ function exec_command(res){
 	    //content = "Success in inserting a record!"
 	    content = stdout;
 	}
-        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.writeHead(200, contentType);
         res.end(content + '\n');
     });
 }
@@ -62,6 +62,7 @@ http.createServer(function (req, res) {
     console.log(url);
 
     command = "";
+    contentType = {'Content-Type': 'text/html'};
 
     postData = "";
     req.addListener("data", function(postDataChunk) {
@@ -80,6 +81,11 @@ http.createServer(function (req, res) {
     if (url.pathname === '/file') {
 	console.log(url.query);
 	filename = url.query;
+	
+	if(filename.split(".")[1] === "js"){
+	    contentType = {'Content-Type': 'application/x-javascript'};
+	}
+
 	command = "file.ss /root/workspace/proxy-node/" + filename;
     }
 
