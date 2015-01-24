@@ -1,5 +1,6 @@
 var http = require('http');
 var exec = require("child_process").exec;
+var fs = require("fs");
 
 function insert(res) {
     console.log(url.pathname);
@@ -52,7 +53,9 @@ function exec_command(res){
 	    content = stdout;
 	}
         res.writeHead(200, contentType);
-        res.end(content + '\n');
+	res.write(eval(content), "binary");
+	res.end();
+        //res.end(content + '\n');
     });
 }
 
@@ -82,9 +85,29 @@ http.createServer(function (req, res) {
 	console.log(url.query);
 	filename = url.query;
 	
-	if(filename.split(".")[1] === "js"){
+	switch(filename.split(".")[1]) {
+	case "js":
 	    contentType = {'Content-Type': 'application/x-javascript'};
+	    break;
+	case "png":
+	    contentType = {'Content-Type': 'image/png'};
+	    break;
 	}
+
+	/*filename = "/root/workspace/proxy-node/" + filename;
+
+	fs.readFile(filename, "binary", function(error, file) {
+	    if(error) {
+		res.writeHead(500, {"Content-Type": "text/plain"});
+		res.write(error + "\n");
+		res.end();
+	    } else {
+		console.log(file);
+		res.writeHead(200, contentType);
+		res.write(file, "binary");
+		res.end();
+	    }
+	});*/
 
 	command = "file.ss /root/workspace/proxy-node/" + filename;
     }
