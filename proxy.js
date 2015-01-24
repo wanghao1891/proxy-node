@@ -49,13 +49,15 @@ function exec_command(res){
         var content = "";
 
 	if (error === null) {
-	    //content = "Success in inserting a record!"
 	    content = stdout;
 	}
         res.writeHead(200, contentType);
-	res.write(eval(content), "binary");
-	res.end();
-        //res.end(content + '\n');
+	if (isBinary) {
+	    res.write(eval(content), "binary");
+	    res.end();
+	} else {
+            res.end(content + '\n');
+	}
     });
 }
 
@@ -66,6 +68,8 @@ http.createServer(function (req, res) {
 
     command = "";
     contentType = {'Content-Type': 'text/html'};
+    
+    isBinary = false;
 
     postData = "";
     req.addListener("data", function(postDataChunk) {
@@ -82,10 +86,15 @@ http.createServer(function (req, res) {
     });
 
     if (url.pathname === '/file') {
+	isBinary = true;
+
 	console.log(url.query);
 	filename = url.query;
 	
 	switch(filename.split(".")[1]) {
+	case "html":
+	    contentType={'Content-Type': 'text/html'};
+	    break;
 	case "js":
 	    contentType = {'Content-Type': 'application/x-javascript'};
 	    break;
@@ -94,33 +103,21 @@ http.createServer(function (req, res) {
 	    break;
 	}
 
-	/*filename = "/root/workspace/proxy-node/" + filename;
-
-	fs.readFile(filename, "binary", function(error, file) {
-	    if(error) {
-		res.writeHead(500, {"Content-Type": "text/plain"});
-		res.write(error + "\n");
-		res.end();
-	    } else {
-		console.log(file);
-		res.writeHead(200, contentType);
-		res.write(file, "binary");
-		res.end();
-	    }
-	});*/
-
 	command = "file.ss /root/workspace/proxy-node/" + filename;
     }
 
     if (url.pathname === '/create'){
+	isBinary = false;
 	command = "create.ss"
     }
 
     if (url.pathname === '/get') {
+	isBinary = false;
 	command = "get.ss"
     }
 
     if (url.pathname === '/html') {
+	isBinary = false;
 	command = "html.ss";
     }
 
