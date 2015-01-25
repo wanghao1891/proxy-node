@@ -1,5 +1,6 @@
-function play(soundobj) {
-    var thissound=document.getElementById(soundobj);
+function play(url) {
+    var thissound=document.getElementById("sound");
+    thissound.src = url;
     thissound.play();
 }
 
@@ -14,7 +15,10 @@ function getVocabulary() {
 	    content = "<ul>";
 
 	    for (i=0;i<vocabularyObj.vocabulary.length-1;i++){
-		content += "<li><a href=\"javascript:play('hello')\">" + vocabularyObj.vocabulary[i].name + "</a></li>";
+		vocabulary = vocabularyObj.vocabulary[i];
+		name = vocabulary.name;
+		sound = vocabulary.sound;
+		content += "<li><a href=\"javascript:play('" + sound  + "')\">" + name + "</a></li>";
 	    }
 
 	    content += "</ul>";
