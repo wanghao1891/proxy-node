@@ -61,7 +61,7 @@ function getArg(url){
     for (i=0;i<args.length;i++) {
         console.log(args[i]);
         kv = args[i].split("=");
-	arg += " " + decodeURIComponent(kv[1]);
+	arg += " " + kv[1];//decodeURIComponent(kv[1]);
     }
     
     console.log("arg: " + arg);

@@ -16,9 +16,10 @@ function getVocabulary() {
 
 	    for (i=0;i<vocabularyObj.vocabulary.length-1;i++){
 		vocabulary = vocabularyObj.vocabulary[i];
-		name = vocabulary.name;
-		sound = vocabulary.sound;
-		content += "<li><a href=\"javascript:play('" + sound  + "')\">" + name + "</a></li>";
+		name = decodeURIComponent(vocabulary.name);
+		pronunciation = decodeURIComponent(vocabulary.pronunciation);
+		sound = decodeURIComponent(vocabulary.sound);
+		content += "<li>" + name + " <a href=\"javascript:play('" + sound  + "')\">BrE /" + pronunciation  + "/</a></li>";
 	    }
 
 	    content += "</ul>";
