@@ -17,9 +17,11 @@ function getVocabulary() {
 	    for (i=0;i<vocabularyObj.vocabulary.length-1;i++){
 		vocabulary = vocabularyObj.vocabulary[i];
 		name = decodeURIComponent(vocabulary.name);
-		pronunciation = decodeURIComponent(vocabulary.pronunciation);
-		sound = decodeURIComponent(vocabulary.sound);
-		content += "<li>" + name + " <a href=\"javascript:play('" + sound  + "')\">BrE /" + pronunciation  + "/</a></li>";
+		pronunciation_uk = decodeURIComponent(vocabulary.pronunciation_uk);
+		sound_uk = decodeURIComponent(vocabulary.sound_uk);
+		pronunciation_us = decodeURIComponent(vocabulary.pronunciation_us);
+		sound_us = decodeURIComponent(vocabulary.sound_us);
+		content += "<li>" + name + " [<a href=\"\" onmouseover=\"play('" + sound_uk  + "')\">BrE /" + pronunciation_uk  + "/</a>&nbsp<a href=\"\" onmouseover=\"play('" + sound_us + "')\">NAmE /" + pronunciation_us  + "/</a>]</li>";
 	    }
 
 	    content += "</ul>";
