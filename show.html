@@ -3,15 +3,18 @@
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="file?style.css">
     <script src="file?get.js"></script>
-    <script>
+    <!-- <script>
       window.onload = getVocabulary;
-    </script>
+    </script> -->
   </head>
   <body>
     <audio controls='controls' hidden='true' id='sound'>
       <source src='http://www.oxfordlearnersdictionaries.com/media/english/uk_pron/h/hel/hello/hello__gb_1.mp3' type='audio/mpeg'>
 	Your browser does not support the audio element.
     </audio>
+    <div id='search_div'>
+      <input id='search_text' type='text' onkeypress='search(event)' />
+    </div>
     <div id='vocabulary_list' />
   </body>
 </html>

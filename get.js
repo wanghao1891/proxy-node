@@ -4,6 +4,26 @@ function play(url) {
     thissound.play();
 }
 
+function search(event) {
+    if (event.keyCode == 13) {
+	console.log(event);
+	
+	var searchText = "search?key=" + document.getElementById("search_text").value;
+	
+	console.log(searchText);
+
+	var req = new XMLHttpRequest();
+	req.onreadystatechange = function() {
+	    if (req.readyState == 4 && req.status == 200) {
+		getVocabulary();
+	    }
+	}
+
+	req.open("GET", searchText, true);
+	req.send();
+    }
+}
+
 function getVocabulary() {
     req = new XMLHttpRequest();
     req.onreadystatechange = function()
