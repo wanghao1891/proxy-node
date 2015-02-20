@@ -8,7 +8,9 @@ function search(event) {
     if (event.keyCode == 13) {
 	console.log(event);
 	
-	var searchText = "search?key=" + document.getElementById("search_text").value;
+	var searchTextField = document.getElementById("search_text");
+	var searchText = "search?key=" + searchTextField.value;
+	searchTextField.value = "";
 	
 	console.log(searchText);
 
