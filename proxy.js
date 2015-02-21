@@ -41,6 +41,9 @@ function getFile(){
     case "png":
 	contentType = {'Content-Type': 'image/png'};
 	break;
+    case "mp3":
+	contentType = {'Content-Type': 'audio/mp3'};
+	break;
     }
 
     command = "file.ss " + filePath + fileName;
