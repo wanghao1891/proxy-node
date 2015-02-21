@@ -1,15 +1,17 @@
+
 var http = require('http');
 var exec = require("child_process").exec;
+var spawn = require("child_process").spawn;
 var fs = require("fs");
 var filePath = "/root/workspace/proxy-node/";
 
 function execCommand(res){
     command = "cd /root/workspace/database/; petite --script " + command;
     console.log(command);
-    exec(command, function (error, stdout, stderr) {
-        console.log("error" + error);
-        console.log("stdout" + stdout);
-        console.log("stderr" + stderr);
+    exec(command, {maxBuffer: 200*1024*200}, function (error, stdout, stderr) {
+//        console.log("error" + error);
+//        console.log("stdout" + stdout);
+//        console.log("stderr" + stderr);
         var content = "";
 
 	if (error === null) {
@@ -25,10 +27,10 @@ function execCommand(res){
     });
 }
 
-function getFile(){
+function getFile(res){
     isBinary = true;
 
-    console.log(url.query);
+//    console.log(url.query);
     fileName = url.query;
     
     switch(fileName.split(".")[1]) {
@@ -47,6 +49,22 @@ function getFile(){
     }
 
     command = "file.ss " + filePath + fileName;
+
+    /*fileName = "/root/workspace/proxy-node/out/" + fileName;
+    fs.readFile(fileName, "binary", function(error, file) {
+	if(error) {
+	    res.writeHead(500, {"Content-Type": "text/plain"});
+	    res.write(error + "\n");
+	    res.end();
+	} else {
+	    console.log(file);
+	    res.writeHead(200, contentType);
+	    res.write(eval(file), "binary");
+	    res.end();
+	}
+    });
+
+    command = "";*/
 }
 
 function getArg(url){
@@ -59,15 +77,15 @@ function getArg(url){
 	args = postData.split("&");
     }
 
-    console.log("args: " + args);
+//    console.log("args: " + args);
 
     for (i=0;i<args.length;i++) {
-        console.log(args[i]);
+//        console.log(args[i]);
         kv = args[i].split("=");
 	arg += " " + kv[1];//decodeURIComponent(kv[1]);
     }
     
-    console.log("arg: " + arg);
+//    console.log("arg: " + arg);
     return arg;
 }
 
@@ -77,7 +95,7 @@ function route(req, res) {
     
     switch(command) {
     case "file":
-	getFile();
+	getFile(res);
 	break;
     case "favicon.ico":
 	command = "";
@@ -95,7 +113,7 @@ function route(req, res) {
 http.createServer(function (req, res) {
     //console.log(req);
     url = require('url').parse(req.url);
-    console.log(url);
+//    console.log(url);
 
     command = "";
     contentType = {'Content-Type': 'text/html'};
@@ -104,11 +122,11 @@ http.createServer(function (req, res) {
 
     req.addListener("data", function(postDataChunk) {
       postData += postDataChunk;
-      console.log("Received POST data chunk '" + postDataChunk + "'.");
+//      console.log("Received POST data chunk '" + postDataChunk + "'.");
     });
 
     req.addListener("end", function() {
-	console.log("End.");
+//	console.log("End.");
 
 	route(req, res);
     });
