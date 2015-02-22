@@ -8,22 +8,11 @@ a:hover {
     TEXT-DECORATION: underline; color: green;
 }
 
-.top {
-    width: 100%;
-    background: blue;
-}
-
 .top-left {
-    //width: 15%;
-    //height: 30px;
-    //background: red;
     float: left;
 }
 
 .top-right {
-    //width: 50%; 
-    //height: 30px;
-    //background: green;
     float: left;
 }
 
