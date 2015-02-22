@@ -9,12 +9,15 @@
   </head>
   <body>
     <audio controls='controls' hidden='true' id='sound'>
-      <source src='http://www.oxfordlearnersdictionaries.com/media/english/uk_pron/h/hel/hello/hello__gb_1.mp3' type='audio/mpeg'>
+      <source src='file?media/english/uk_pron/h/hel/hello/hello__gb_1.mp3' type='audio/mpeg'>
 	Your browser does not support the audio element.
     </audio>
     <div id='search_div'>
-      <input id='search_text' type='text' onkeypress='search(event)' />
+      <div id='search_text_div' class='top-left'>
+	<input id='search_text' type='text' onkeypress='search(event)' />
+      </div>
+      <div id='search_detail_div' class='top-right'></div>
     </div>
-    <div id='vocabulary_list' />
+    <div id='vocabulary_list' class='center'></div>
   </body>
 </html>

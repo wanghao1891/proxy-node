@@ -5,9 +5,9 @@ function play(url) {
 }
 
 function search(event) {
+    console.log(event);
+
     if (event.keyCode == 13) {
-	console.log(event);
-	
 	var searchTextField = document.getElementById("search_text");
 	var searchText = "search?key=" + searchTextField.value;
 	searchTextField.value = "";
@@ -23,6 +23,8 @@ function search(event) {
 
 	req.open("GET", searchText, true);
 	req.send();
+    } else {
+	document.getElementById("search_detail_div").innerHTML = document.getElementById("search_text").value;
     }
 }
 
