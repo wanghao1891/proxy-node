@@ -34,6 +34,18 @@ function search(event) {
     }
 }
 
+function getVocabularyDetail(name) {
+    var url = "file?out/" + name + ".html";
+    var vocabularyDetail = document.getElementById("vocabulary_detail");
+    req = new XMLHttpRequest();
+    req.onreadystatechange = function() {
+	vocabularyDetail.innerHTML = req.responseText;
+    }
+
+    req.open("GET", url, true);
+    req.send();
+}
+
 function getVocabulary() {
     req = new XMLHttpRequest();
     req.onreadystatechange = function()
@@ -51,7 +63,7 @@ function getVocabulary() {
 		sound_uk = decodeURIComponent(vocabulary.sound_uk);
 		pronunciation_us = decodeURIComponent(vocabulary.pronunciation_us);
 		sound_us = decodeURIComponent(vocabulary.sound_us);
-		content += "<li><a onmouseover=\"play('" + sound_uk + "')\">" + name + "</a>" + " [<a onclick=\"play('" + sound_uk  + "')\">BrE</a> /" + pronunciation_uk  + "/&nbsp<a onclick=\"play('" + sound_us + "')\">NAmE</a> /" + pronunciation_us  + "/]</li>";
+		content += "<li><a onmouseover=\"play('" + sound_uk + "')\" onclick=\"getVocabularyDetail('" + name  +  "')\">" + name + "</a>" + " [<a onclick=\"play('" + sound_uk  + "')\">BrE</a> /" + pronunciation_uk  + "/&nbsp<a onclick=\"play('" + sound_us + "')\">NAmE</a> /" + pronunciation_us  + "/]</li>";
 	    }
 
 	    content += "</ol>";
