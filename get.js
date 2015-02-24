@@ -38,13 +38,7 @@ function getVocabularyDetail(name) {
     var url = "file?out/" + name + ".html";
     var vocabularyDetail = document.getElementById(name);
     
-    if (vocabularyDetail.innerHTML != ""){
-	if (vocabularyDetail.hidden) {
-	    vocabularyDetail.hidden = false;
-	} else {
-	    vocabularyDetail.hidden = true;
-	}
-    } else {
+    if (vocabularyDetail.innerHTML == ""){
 	var url = "file?out/" + name + ".html";
 	req = new XMLHttpRequest();
 	req.onreadystatechange = function() {
@@ -53,6 +47,12 @@ function getVocabularyDetail(name) {
 
 	req.open("GET", url, true);
 	req.send();
+    }
+    
+    if (vocabularyDetail.hidden) {
+	vocabularyDetail.hidden = false;
+    } else {
+	vocabularyDetail.hidden = true;
     }
 }
 
@@ -74,7 +74,7 @@ function getVocabulary() {
 		pronunciation_us = decodeURIComponent(vocabulary.pronunciation_us);
 		sound_us = decodeURIComponent(vocabulary.sound_us);
 		content += "<li><a onmouseover=\"play('" + sound_uk + "')\" onclick=\"getVocabularyDetail('" + name  +  "')\">" + name + "</a>" + " [<a onclick=\"play('" + sound_uk  + "')\">BrE</a> /" + pronunciation_uk  + "/&nbsp<a onclick=\"play('" + sound_us + "')\">NAmE</a> /" + pronunciation_us  + "/]</li>";
-		content += "<div id='" + name + "'></div>"
+		content += "<div id='" + name + "' style='border:1px solid #000' hidden='true'></div>"
 	    }
 
 	    content += "</ol>";
