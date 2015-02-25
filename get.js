@@ -42,7 +42,7 @@ function getVocabularyDetail(name) {
 	var url = "file?out/" + name + ".html";
 	req = new XMLHttpRequest();
 	req.onreadystatechange = function() {
-	    vocabularyDetail.innerHTML = req.responseText;
+	    //vocabularyDetail.innerHTML = req.responseText;
 	}
 
 	req.open("GET", url, true);
@@ -73,8 +73,10 @@ function getVocabulary() {
 		sound_uk = decodeURIComponent(vocabulary.sound_uk);
 		pronunciation_us = decodeURIComponent(vocabulary.pronunciation_us);
 		sound_us = decodeURIComponent(vocabulary.sound_us);
+		definition = decodeURIComponent(vocabulary.definition);
+
 		content += "<li><a onmouseover=\"play('" + sound_uk + "')\" onclick=\"getVocabularyDetail('" + name  +  "')\">" + name + "</a>" + " [<a onclick=\"play('" + sound_uk  + "')\">BrE</a> /" + pronunciation_uk  + "/&nbsp<a onclick=\"play('" + sound_us + "')\">NAmE</a> /" + pronunciation_us  + "/]</li>";
-		content += "<div id='" + name + "' style='border:1px solid #000' hidden='true'></div>"
+		content += "<div id='" + name + "' style='border:1px solid #000' hidden='true'>" + definition  + "</div>"
 	    }
 
 	    content += "</ol>";
