@@ -13,7 +13,8 @@ function search(event) {
 
     if (event.keyCode == 13) {
 	var searchTextField = document.getElementById("search_text");
-	var searchText = "search?key=" + searchTextField.value;
+	var _value = searchTextField.value;
+	var searchText = "search?key=" + _value;
 	//searchTextField.value = "";
 	
 	console.log(searchText);
@@ -21,8 +22,18 @@ function search(event) {
 	var req = new XMLHttpRequest();
 	req.onreadystatechange = function() {
 	    if (req.readyState == 4 && req.status == 200) {
-		searchTextDiv.innerHTML = "The search of " + searchTextField.value + " is finished."
-		getVocabulary();
+		searchTextDiv.innerHTML = "The search of " + _value + " is finished."
+
+		if (JSON.parse(req.responseText) === 0) {
+		    getVocabulary();
+		} else {
+		    _id = _value + "-li";
+		    _element = document.getElementById(_id);
+		    _element.style.color = "blue";
+		    _element.style.fontStyle = "italic";
+		    location.hash = _id;
+		}
+
 		searchTextField.value = "";
 	    }
 	}
@@ -75,7 +86,7 @@ function getVocabulary() {
 		sound_us = decodeURIComponent(vocabulary.sound_us);
 		definition = decodeURIComponent(vocabulary.definition);
 
-		content += "<li><a onmouseover=\"play('" + sound_uk + "')\" onclick=\"getVocabularyDetail('" + name  +  "')\">" + name + "</a>" + " [<a onclick=\"play('" + sound_uk  + "')\">BrE</a> /" + pronunciation_uk  + "/&nbsp<a onclick=\"play('" + sound_us + "')\">NAmE</a> /" + pronunciation_us  + "/]</li>";
+		content += "<li><a id='" + name + "-li' onmouseover=\"play('" + sound_uk + "')\" onclick=\"getVocabularyDetail('" + name  +  "')\">" + name + "</a>" + " [<a onclick=\"play('" + sound_uk  + "')\">BrE</a> /" + pronunciation_uk  + "/&nbsp<a onclick=\"play('" + sound_us + "')\">NAmE</a> /" + pronunciation_us  + "/]</li>";
 		content += "<div id='" + name + "' style='border:1px solid #000' hidden='true'>" + definition  + "</div>"
 	    }
 
