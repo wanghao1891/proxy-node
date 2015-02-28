@@ -48,15 +48,26 @@ function search(event) {
 	console.log("Query relative.");
 	var _query = "relative?key=" + _value; 
 	var req = new XMLHttpRequest();
+	
+	var relativeDiv = document.getElementById("relative_div");
+
 	req.onreadystatechange = function() {
 	    if (req.readyState == 4 && req.status == 200) {
 		var _list = JSON.parse(req.responseText).results;
 
 		var _length = _list.length;
 
+		var relativeList = "<ul>"
+		
 		for (i=0; i< _length; i++) {
-		    searchTextDiv.innerHTML += _list[i].searchtext + " ";
+		    relativeList += "<li>" + _list[i].searchtext + "</li>";
 		}
+
+		relativeList += "</ul>"
+
+		relativeDiv.innerHTML = relativeList;
+
+		relativeDiv.hidden = false;
 	    }
 	}
 
