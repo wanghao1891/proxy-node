@@ -8,12 +8,14 @@ function search(event) {
     console.log(event);
 
     var searchTextField = document.getElementById("search_text");
+    var _value = searchTextField.value;
+
     var searchTextDiv = document.getElementById("search_detail_div");
-    searchTextDiv.innerHTML = searchTextField.value;
+    searchTextDiv.innerHTML = _value;
+
+    console.log(_value.length);
 
     if (event.keyCode == 13) {
-	var searchTextField = document.getElementById("search_text");
-	var _value = searchTextField.value;
 	var searchText = "search?key=" + _value;
 	//searchTextField.value = "";
 	
@@ -42,23 +44,29 @@ function search(event) {
 	req.send();
 	
 	searchTextDiv.innerHTML = "Searching for " + searchTextField.value + " ...";
+    } else if (_value.length > 1) {
+	console.log("Query relative.");
+	var _query = "relative?key=" + _value; 
+	var req = new XMLHttpRequest();
+	req.onreadystatechange = function() {
+	    if (req.readyState == 4 && req.status == 200) {
+		var _list = JSON.parse(req.responseText).results;
+
+		var _length = _list.length;
+
+		for (i=0; i< _length; i++) {
+		    searchTextDiv.innerHTML += _list[i].searchtext + " ";
+		}
+	    }
+	}
+
+	req.open("GET", _query, true);
+	req.send();
     }
 }
 
 function getVocabularyDetail(name) {
-    var url = "file?out/" + name + ".html";
     var vocabularyDetail = document.getElementById(name);
-    
-    if (vocabularyDetail.innerHTML == ""){
-	var url = "file?out/" + name + ".html";
-	req = new XMLHttpRequest();
-	req.onreadystatechange = function() {
-	    //vocabularyDetail.innerHTML = req.responseText;
-	}
-
-	req.open("GET", url, true);
-	req.send();
-    }
     
     if (vocabularyDetail.hidden) {
 	vocabularyDetail.hidden = false;
