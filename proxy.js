@@ -5,7 +5,7 @@ var spawn = require("child_process").spawn;
 var fs = require("fs");
 var filePath = "/root/workspace/proxy-node/";
 
-function execCommand(res){
+function execCommand(res, binary){
     command = "cd /root/workspace/database/; petite --script " + command;
     console.log(command);
     exec(command, {maxBuffer: 200*1024*200}, function (error, stdout, stderr) {
@@ -18,7 +18,10 @@ function execCommand(res){
 	    content = stdout;
 	}
         res.writeHead(200, contentType);
-	if (isBinary) {
+
+	console.log(binary);
+
+	if (binary) {
 	    res.write(eval(content), "binary");
 	    res.end();
 	} else {
@@ -28,7 +31,7 @@ function execCommand(res){
 }
 
 function getFile(res){
-    isBinary = true;
+//    isBinary = true;
 
 //    console.log(url.query);
     fileName = url.query;
@@ -90,6 +93,7 @@ function getArg(url){
 }
 
 function route(req, res) {
+    var isBinary = true;
     url = require('url').parse(req.url);
     command = url.pathname.split("/")[1];
     
@@ -106,7 +110,7 @@ function route(req, res) {
     }
 
     if (command != "") {
-	execCommand(res);
+	execCommand(res, isBinary);
     }
 }
 
