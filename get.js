@@ -5,13 +5,15 @@ function play(url) {
 }
 
 function search() {
+    var relativeDiv = document.getElementById("relative_div");
+    relativeDiv.hidden = true;
+
     var searchTextField = document.getElementById("search_text");
     var _value = searchTextField.value;
 
     var searchTextDiv = document.getElementById("search_detail_div");
 
     var searchText = "search?key=" + _value;
-    //searchTextField.value = "";                                                                                                                                              
 
     console.log(searchText);
 
@@ -47,9 +49,6 @@ function searchRelative(name) {
     searchTextField.value = name;
 
     search();
-
-    var relativeDiv = document.getElementById("relative_div");
-    relativeDiv.hidden = true;
 }
 
 function getRelative(_value) {
@@ -65,19 +64,14 @@ function getRelative(_value) {
 
 	    var _length = _list.length;
 
-	    //var relativeList = "<ul>"
 	    var relativeList = "";
 
 	    for (i=0; i< _length; i++) {
 		var _row = _list[i].searchtext;
-//		relativeList += "<li><a onclick='searchRelative(\"" + _row + "\")'>" + _row + "</a></li>";
 		relativeList += "<a name='relative' onclick='searchRelative(\"" + _row + "\")'>" + _row + "</a></br>";
 	    }
 
-	    //relativeList += "</ul>"
-
 	    relativeDiv.innerHTML = relativeList;
-
 	    relativeDiv.hidden = false;
 	}
     }
@@ -94,89 +88,59 @@ function query(event) {
 
     var searchTextField = document.getElementById("search_text");
     var _value = searchTextField.value;
-
-    var searchTextDiv = document.getElementById("search_detail_div");
-    searchTextDiv.innerHTML = _value;
-
     console.log(_value.length);
 
-    if (event.keyCode == 13) {
+    switch(event.keyCode) {
+    case 13: //Enter
 	search();
-    } else if (_value.length > 1) {
-//	getRelative(_value);
-
-	var _elements = document.getElementsByName("relative");
-	length = _elements.length;
-
-	var _pre, cur;
-	
-	if (event.keyCode == 40) {//keyDown
-//	    var _elements = document.getElementsByName("relative");
-//	    length = _elements.length;
-
-//	    var _pre = null;
-
-	    if (index == (length - 1)) {//when the position is in bottom.
-		_pre = _elements[index]
-                _pre.style.color = "";
-                _pre.style.fontStyle = "";
-
-		index = 0;
-		_cur = _elements[index]
-		_cur.style.color = "blue";
-		_cur.style.fontStyle = "italic";
-	    } else {
-		index += 1;
-		
-		if (index != 0) {//when the position is not in top
-		    _pre = _elements[index - 1]
-		    _pre.style.color = "";
-		    _pre.style.fontStyle = "";
-		}
-
-		_cur = _elements[index]
-		_cur.style.color = "blue";
-		_cur.style.fontStyle = "italic";
-	    }
-
-	    searchTextField.value = _cur.innerHTML;
-
-	    //var _event = document.createEvent('HTMLEvents');
-	    //_event.initEvent('mouseover', false, true);
-	    
-	    //_element.dispatchEvent(_event);
-	} else if (event.keyCode == 38) {//keyUp
-	    if (index == -1 || index == 0) {//when the position is in bottom and top.
-		if (index == 0) {
-                    _pre = _elements[index]
-                    _pre.style.color = "";
-                    _pre.style.fontStyle = "";
-		}
-		
+	break;
+    case 38: //KeyUp
+	selectItem(searchTextField, function() {
+	    if (index < 1) {//when the position is in bottom and top.
 		index = length -1
-		
-		_cur = _elements[index]
-		_cur.style.color = "blue";
-		_cur.style.fontStyle = "italic";
-
 	    } else {
 		index -= 1;
-		_cur = _elements[index]
-		_cur.style.color = "blue";
-		_cur.style.fontStyle = "italic";
-
-		_pre = _elements[index + 1]
-                _pre.style.color = "";
-                _pre.style.fontStyle = "";
 	    }
-
-	    searchTextField.value = _cur.innerHTML;
-	    
-	    console.log("index: " + index);
-	} else {
+	});
+	break;
+    case 40: //KeyDown
+	selectItem(searchTextField, function() {
+	    if (index == (length - 1)) {//when the position is in bottom.
+		index = 0;
+	    } else {
+		index += 1;
+	    }
+	});
+	break;
+    default:
+	if (_value.length > 1) {
 	    getRelative(_value);
 	}
+	break;
     }
+}
+
+function selectItem(searchTextField, processIndex) {
+    var _elements = document.getElementsByName("relative");
+    length = _elements.length;
+
+    var _pre, cur;
+
+    if (index != -1) {
+	_pre = _elements[index]
+        _pre.style.color = "";
+        _pre.style.fontStyle = "";
+    }
+
+    processIndex();
+
+    _cur = _elements[index]
+    _cur.style.color = "blue";
+    _cur.style.fontStyle = "italic";
+
+    searchTextField.value = _cur.innerHTML;
+
+    console.log("index:" + index);
 }
 
 function getVocabularyDetail(name) {
@@ -217,8 +181,6 @@ function getVocabulary() {
 
 	    content += "</ol>";
 
-	    //alert(content);
-	    
 	    document.getElementById("vocabulary_list").innerHTML = content;
 	}
     }
