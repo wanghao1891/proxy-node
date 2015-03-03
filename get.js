@@ -71,7 +71,7 @@ function getRelative(_value) {
 	    for (i=0; i< _length; i++) {
 		var _row = _list[i].searchtext;
 //		relativeList += "<li><a onclick='searchRelative(\"" + _row + "\")'>" + _row + "</a></li>";
-		relativeList += "<a onclick='searchRelative(\"" + _row + "\")'>" + _row + "</a></br>";
+		relativeList += "<a name='relative' onclick='searchRelative(\"" + _row + "\")'>" + _row + "</a></br>";
 	    }
 
 	    //relativeList += "</ul>"
@@ -85,6 +85,9 @@ function getRelative(_value) {
     req.open("GET", _query, true);
     req.send();
 }
+
+var index = -1;
+var length = 0;
 
 function query(event) {
     console.log(event);
@@ -100,7 +103,79 @@ function query(event) {
     if (event.keyCode == 13) {
 	search();
     } else if (_value.length > 1) {
-	getRelative(_value);
+//	getRelative(_value);
+
+	var _elements = document.getElementsByName("relative");
+	length = _elements.length;
+
+	var _pre, cur;
+	
+	if (event.keyCode == 40) {//keyDown
+//	    var _elements = document.getElementsByName("relative");
+//	    length = _elements.length;
+
+//	    var _pre = null;
+
+	    if (index == (length - 1)) {//when the position is in bottom.
+		_pre = _elements[index]
+                _pre.style.color = "";
+                _pre.style.fontStyle = "";
+
+		index = 0;
+		_cur = _elements[index]
+		_cur.style.color = "blue";
+		_cur.style.fontStyle = "italic";
+	    } else {
+		index += 1;
+		
+		if (index != 0) {//when the position is not in top
+		    _pre = _elements[index - 1]
+		    _pre.style.color = "";
+		    _pre.style.fontStyle = "";
+		}
+
+		_cur = _elements[index]
+		_cur.style.color = "blue";
+		_cur.style.fontStyle = "italic";
+	    }
+
+	    searchTextField.value = _cur.innerHTML;
+
+	    //var _event = document.createEvent('HTMLEvents');
+	    //_event.initEvent('mouseover', false, true);
+	    
+	    //_element.dispatchEvent(_event);
+	} else if (event.keyCode == 38) {//keyUp
+	    if (index == -1 || index == 0) {//when the position is in bottom and top.
+		if (index == 0) {
+                    _pre = _elements[index]
+                    _pre.style.color = "";
+                    _pre.style.fontStyle = "";
+		}
+		
+		index = length -1
+		
+		_cur = _elements[index]
+		_cur.style.color = "blue";
+		_cur.style.fontStyle = "italic";
+
+	    } else {
+		index -= 1;
+		_cur = _elements[index]
+		_cur.style.color = "blue";
+		_cur.style.fontStyle = "italic";
+
+		_pre = _elements[index + 1]
+                _pre.style.color = "";
+                _pre.style.fontStyle = "";
+	    }
+
+	    searchTextField.value = _cur.innerHTML;
+	    
+	    console.log("index: " + index);
+	} else {
+	    getRelative(_value);
+	}
     }
 }
 
