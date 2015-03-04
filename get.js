@@ -154,23 +154,23 @@ function getVocabularyDetail(name) {
 }
 
 function getVocabulary() {
-    req = new XMLHttpRequest();
+    var req = new XMLHttpRequest();
     req.onreadystatechange = function()
     {
 	if (req.readyState == 4 && req.status == 200)
 	{
-	    vocabularyObj = JSON.parse(req.responseText);
+	    var vocabularyObj = JSON.parse(req.responseText);
 
-	    content = "<ol reversed>";
+	    var content = "<ol reversed>";
 
 	    for (i=0;i<vocabularyObj.vocabulary.length-1;i++){
-		vocabulary = vocabularyObj.vocabulary[i];
-		name = decodeURIComponent(vocabulary.name);
-		pronunciation_uk = decodeURIComponent(vocabulary.pronunciation_uk);
-		sound_uk = decodeURIComponent(vocabulary.sound_uk);
-		pronunciation_us = decodeURIComponent(vocabulary.pronunciation_us);
-		sound_us = decodeURIComponent(vocabulary.sound_us);
-		definition = decodeURIComponent(vocabulary.definition);
+		var vocabulary = vocabularyObj.vocabulary[i];
+		var name = decodeURIComponent(vocabulary.name);
+		var pronunciation_uk = decodeURIComponent(vocabulary.pronunciation_uk);
+		var sound_uk = decodeURIComponent(vocabulary.sound_uk);
+		var pronunciation_us = decodeURIComponent(vocabulary.pronunciation_us);
+		var sound_us = decodeURIComponent(vocabulary.sound_us);
+		var definition = decodeURIComponent(vocabulary.definition);
 
 		//process definition for format.
 		definition = definition.replace(/\./g, ".<p>");
@@ -186,4 +186,20 @@ function getVocabulary() {
     }
     req.open("GET","get",true);
     req.send();
+}
+
+function getArticle() {
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function() {
+        if (req.readyState == 4 && req.status == 200) {
+	    var center = document.getElementById("vocabulary_detail");
+	    center.innerHTML = req.responseText;
+	}
+    }
+
+    //req.open("GET","file?article/JavaScript-The-Good-Parts.pdf",true);
+    //req.send();
+
+    var _pdf = document.getElementById("pdf");
+    _pdf.data = "file?article/JavaScript-The-Good-Parts.pdf";
 }
