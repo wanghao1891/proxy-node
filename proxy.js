@@ -1,4 +1,3 @@
-
 var http = require('http');
 var exec = require("child_process").exec;
 var spawn = require("child_process").spawn;
@@ -95,6 +94,28 @@ function getArg(url){
     return arg;
 }
 
+function upload_file(req, res) {
+/*    req.setBodyEncoding('binary');
+
+    var stream = new multipart.Stream(req);
+    stream.addListener('part', function(part) {
+	part.addListener('body', function(chunk) {
+	    var progress = (stream.bytesReceived / stream.bytesTotal * 100).toFixed(2);
+	    var mb = (stream.bytesTotal / 1024 / 1024).toFixed(1);
+
+	    sys.print("Uploading "+mb+"mb ("+progress+"%)\015");
+
+	    // chunk could be appended to a file if the uploaded file needs to be saved
+	});
+    });
+    stream.addListener('complete', function() {
+	res.sendHeader(200, {'Content-Type': 'text/plain'});
+	res.sendBody('Thanks for playing!');
+	res.finish();
+	sys.puts("\n=> Done");
+    });*/
+}
+
 function route(req, res) {
     var isBinary = true;
     url = require('url').parse(req.url);
@@ -107,9 +128,14 @@ function route(req, res) {
     case "favicon.ico":
 	command = "";
 	break;
+    case "upload":
+	isBinary = false;
+	upload_file(req, res);
+	break;
     default:
 	isBinary = false;
 	command += ".ss" + getArg(url);
+	break;
     }
 
     if (command != "") {
@@ -129,7 +155,7 @@ http.createServer(function (req, res) {
 
     req.addListener("data", function(postDataChunk) {
       postData += postDataChunk;
-//      console.log("Received POST data chunk '" + postDataChunk + "'.");
+      console.log("Received POST data chunk '" + postDataChunk + "'.");
     });
 
     req.addListener("end", function() {

@@ -203,3 +203,21 @@ function getArticle() {
     var _pdf = document.getElementById("pdf");
     _pdf.data = "file?article/JavaScript-The-Good-Parts.pdf";
 }
+
+function uploadFile() {
+    var fd = new FormData();
+    
+    fd.append("fileName", document.getElementById("file_upload").files[0]);
+
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function() {
+        if (req.readyState == 4 && req.status == 200) {
+	    //var center = document.getElementById("vocabulary_detail");
+	    //center.innerHTML = req.responseText;
+	    console.log("upload done!");
+	}
+    }
+
+    req.open("POST","upload",true);
+    req.send(fd);
+}

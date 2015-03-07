@@ -28,11 +28,19 @@ a:hover {
 .center-left {
     width: 35%;
     float: left;
+    border:1px solid #000;
+}
+
+.center-middle {
+    width: 20%;
+    float: left;
+    border:1px solid #000;
 }
 
 .center-right {
-    width: 65%;
+    width: 41%;
     float: left;
+    border:1px solid #000;
 }
 
 .relative {
@@ -47,3 +55,9 @@ a:hover {
 //.relative ul {
 //    list-style-type:none;
 //}
+
+::selection { 
+    background: #57b94a; 
+    color: #fff; 
+    text-shadow: none; 
+}
