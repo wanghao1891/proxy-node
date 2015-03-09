@@ -2,6 +2,8 @@ var http = require('http');
 var exec = require("child_process").exec;
 var spawn = require("child_process").spawn;
 var fs = require("fs");
+var formidable = require('formidable');
+var util = require('util');
 var filePath = "/root/workspace/proxy-node/";
 
 function execCommand(res, binary, command){
@@ -97,11 +99,33 @@ function getArg(url, postData){
 }
 
 function upload_file(req, res, postData) {
-    console.log(postData);
+    console.log("upload_file" + postData);
+    var form = new formidable.IncomingForm();
+
+    form.uploadDir = filePath + "article/";
+
+    form.parse(req, function(err, fields, files) {
+	console.log("parse done.")
+	console.log(files);
+	console.log(util.inspect({fields: fields, files: files}));
+	
+	_dest = form.uploadDir + files.fileName.name;
+
+	fs.rename(files.fileName.path, _dest, function (err) {
+	    if (err) throw err;
+	    console.log('renamed complete');
+	});
+	
+	res.writeHead(200, {'content-type': 'text/plain'});
+	res.write('received upload:\n\n');
+	res.end(util.inspect({fields: fields, files: files}));
+    });
+
+    /*console.log(postData);
     console.log(postData.length);
     var data = new Buffer(postData.length);
     
-    console.log("Buffer: " + Buffer.isBuffer(postData));
+    console.log("Buffer: " + Buffer.isBuffer(postData));*/
 /*    req.setBodyEncoding('binary');
 
     var stream = new multipart.Stream(req);
@@ -160,6 +184,8 @@ http.createServer(function (req, res) {
     isBinary = false;
     var postData = "";
 
+    route(req, res, postData);
+
     req.addListener("data", function(postDataChunk) {
       postData += postDataChunk;
 //      console.log("Received POST data chunk '" + postDataChunk + "'.");
@@ -168,7 +194,7 @@ http.createServer(function (req, res) {
     req.addListener("end", function() {
 //	console.log("End.");
 
-	route(req, res, postData);
+//	route(req, res, postData);
     });
 }).listen(80, '0.0.0.0');
 
