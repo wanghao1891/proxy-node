@@ -4,7 +4,7 @@ var spawn = require("child_process").spawn;
 var fs = require("fs");
 var filePath = "/root/workspace/proxy-node/";
 
-function execCommand(res, binary){
+function execCommand(res, binary, command){
     command = "cd /root/workspace/database/; petite --script " + command;
     console.log(command);
     exec(command, {maxBuffer: 200*1024*200}, function (error, stdout, stderr) {
@@ -29,7 +29,7 @@ function execCommand(res, binary){
     });
 }
 
-function getFile(res){
+function getFile(url, res){
 //    isBinary = true;
 
 //    console.log(url.query);
@@ -53,7 +53,9 @@ function getFile(res){
 	break;
     }
 
-    command = "file.ss " + filePath + fileName;
+    var command = "file.ss " + filePath + fileName;
+    
+    return command;
 
     /*fileName = "/root/workspace/proxy-node/out/" + fileName;
     fs.readFile(fileName, "binary", function(error, file) {
@@ -72,7 +74,7 @@ function getFile(res){
     command = "";*/
 }
 
-function getArg(url){
+function getArg(url, postData){
     args = [];
     arg = "";
     console.log("url.query: " + url.query);
@@ -94,7 +96,12 @@ function getArg(url){
     return arg;
 }
 
-function upload_file(req, res) {
+function upload_file(req, res, postData) {
+    console.log(postData);
+    console.log(postData.length);
+    var data = new Buffer(postData.length);
+    
+    console.log("Buffer: " + Buffer.isBuffer(postData));
 /*    req.setBodyEncoding('binary');
 
     var stream = new multipart.Stream(req);
@@ -116,52 +123,52 @@ function upload_file(req, res) {
     });*/
 }
 
-function route(req, res) {
+function route(req, res, postData) {
     var isBinary = true;
-    url = require('url').parse(req.url);
-    command = url.pathname.split("/")[1];
+    var url = require('url').parse(req.url);
+    var command = url.pathname.split("/")[1];
     
     switch(command) {
     case "file":
-	getFile(res);
+	command = getFile(url, res);
 	break;
     case "favicon.ico":
 	command = "";
 	break;
     case "upload":
 	isBinary = false;
-	upload_file(req, res);
+	upload_file(req, res, postData);
 	break;
     default:
 	isBinary = false;
-	command += ".ss" + getArg(url);
+	command += ".ss" + getArg(url, postData);
 	break;
     }
 
     if (command != "") {
-	execCommand(res, isBinary);
+	execCommand(res, isBinary, command);
     }
 }
 
 http.createServer(function (req, res) {
-    //console.log(req);
-    url = require('url').parse(req.url);
+//    console.log(req);
+//    url = require('url').parse(req.url);
 //    console.log(url);
 
     command = "";
     contentType = {'Content-Type': 'text/html'};
     isBinary = false;
-    postData = "";
+    var postData = "";
 
     req.addListener("data", function(postDataChunk) {
       postData += postDataChunk;
-      console.log("Received POST data chunk '" + postDataChunk + "'.");
+//      console.log("Received POST data chunk '" + postDataChunk + "'.");
     });
 
     req.addListener("end", function() {
 //	console.log("End.");
 
-	route(req, res);
+	route(req, res, postData);
     });
 }).listen(80, '0.0.0.0');
 
