@@ -207,6 +207,7 @@ function getArticle() {
 function uploadFile() {
     var fd = new FormData();
     
+    fd.append("name", document.getElementById("file_name").value);
     fd.append("fileName", document.getElementById("file_upload").files[0]);
 
     var req = new XMLHttpRequest();

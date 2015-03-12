@@ -111,6 +111,9 @@ function upload_file(req, res, postData) {
 	
 	_dest = form.uploadDir + files.fileName.name;
 
+	var _name = fields.name;
+	console.log(_name);
+
 	fs.rename(files.fileName.path, _dest, function (err) {
 	    if (err) throw err;
 	    console.log('renamed complete');
@@ -119,6 +122,10 @@ function upload_file(req, res, postData) {
 	res.writeHead(200, {'content-type': 'text/plain'});
 	res.write('received upload:\n\n');
 	res.end(util.inspect({fields: fields, files: files}));
+
+	var command = "insert.ss article \"" + _name + "\" \"" + _dest + "\"";
+	var isBinary = false;
+	execCommand(res, isBinary, command);
     });
 
     /*console.log(postData);
