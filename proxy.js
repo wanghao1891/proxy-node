@@ -9,7 +9,7 @@ var filePath = "/root/workspace/proxy-node/";
 function execCommand(res, binary, command){
     command = "cd /root/workspace/database/; petite --script " + command;
     console.log(command);
-    exec(command, {maxBuffer: 200*1024*200}, function (error, stdout, stderr) {
+    exec(command, {maxBuffer: 2000000*1024*200}, function (error, stdout, stderr) {
 //        console.log("error" + error);
 //        console.log("stdout" + stdout);
 //        console.log("stderr" + stderr);
@@ -57,23 +57,23 @@ function getFile(url, res){
 
     var command = "file.ss " + filePath + fileName;
     
-    return command;
+//    return command;
 
-    /*fileName = "/root/workspace/proxy-node/out/" + fileName;
+    fileName = filePath + fileName;
     fs.readFile(fileName, "binary", function(error, file) {
 	if(error) {
 	    res.writeHead(500, {"Content-Type": "text/plain"});
 	    res.write(error + "\n");
 	    res.end();
 	} else {
-	    console.log(file);
+	    //console.log(file);
 	    res.writeHead(200, contentType);
-	    res.write(eval(file), "binary");
+	    res.write(file, "binary");
 	    res.end();
 	}
     });
 
-    command = "";*/
+    return command = "";
 }
 
 function getArg(url, postData){
@@ -109,7 +109,7 @@ function upload_file(req, res, postData) {
 	console.log(files);
 	console.log(util.inspect({fields: fields, files: files}));
 	
-	_dest = form.uploadDir + files.fileName.name;
+	var _dest = form.uploadDir + files.fileName.name;
 
 	var _name = fields.name;
 	console.log(_name);
@@ -117,15 +117,15 @@ function upload_file(req, res, postData) {
 	fs.rename(files.fileName.path, _dest, function (err) {
 	    if (err) throw err;
 	    console.log('renamed complete');
-	});
-	
-	res.writeHead(200, {'content-type': 'text/plain'});
-	res.write('received upload:\n\n');
-	res.end(util.inspect({fields: fields, files: files}));
 
-	var command = "insert.ss article \"" + _name + "\" \"" + _dest + "\"";
-	var isBinary = false;
-	execCommand(res, isBinary, command);
+	    var command = "insert.ss article \"" + _name + "\" \"article/" + files.fileName.name + "\"";
+	    var isBinary = false;
+	    execCommand(res, isBinary, command);
+	});
+
+//	res.writeHead(200, {'content-type': 'text/plain'});
+//	res.write('received upload:\n\n');
+//	res.end(util.inspect({fields: fields, files: files}));
     });
 
     /*console.log(postData);
@@ -168,6 +168,7 @@ function route(req, res, postData) {
 	break;
     case "upload":
 	isBinary = false;
+	command = "";
 	upload_file(req, res, postData);
 	break;
     default:

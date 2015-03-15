@@ -189,19 +189,50 @@ function getVocabulary() {
 }
 
 function getArticle() {
-    var req = new XMLHttpRequest();
-    req.onreadystatechange = function() {
-        if (req.readyState == 4 && req.status == 200) {
-	    var center = document.getElementById("vocabulary_detail");
-	    center.innerHTML = req.responseText;
-	}
-    }
+//    var req = new XMLHttpRequest();
+//    req.onreadystatechange = function() {
+//        if (req.readyState == 4 && req.status == 200) {
+//	    var center = document.getElementById("vocabulary_detail");
+//	    center.innerHTML = req.responseText;
+//	}
+//    }
 
     //req.open("GET","file?article/JavaScript-The-Good-Parts.pdf",true);
     //req.send();
 
+//    var _pdf = document.getElementById("pdf");
+//    _pdf.data = "file?article/JavaScript-The-Good-Parts.pdf";
+
+    console.log("start getting article.");
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function() {
+	if (req.readyState == 4 && req.status == 200) {
+	    var articleObj = JSON.parse(req.responseText);
+	    console.log(articleObj);
+
+	    var content = "<ol reversed>";
+
+	    for (i=0;i<articleObj.article.length-1;i++){
+		var article = articleObj.article[i];
+		var name = decodeURIComponent(article.name);
+		var path = decodeURIComponent(article.path);
+
+		content += "<li><a id='" + name + "-li' onclick=\"showArticle('" + path  +  "')\">" + name + "</a></li>";
+	    }
+
+	    content += "</ol>";
+
+	    document.getElementById("article_list").innerHTML = content;
+	    console.log("getting article is end.");
+	}
+    }
+    req.open("GET","get-article",true);
+    req.send();
+}
+
+function showArticle(path) {
     var _pdf = document.getElementById("pdf");
-    _pdf.data = "file?article/JavaScript-The-Good-Parts.pdf";
+    _pdf.data = "file?" + path;
 }
 
 function uploadFile() {
@@ -216,9 +247,15 @@ function uploadFile() {
 	    //var center = document.getElementById("vocabulary_detail");
 	    //center.innerHTML = req.responseText;
 	    console.log("upload done!");
+	    getArticle();
 	}
     }
 
     req.open("POST","upload",true);
     req.send(fd);
+}
+
+function init() {
+    getVocabulary();
+    getArticle();
 }
