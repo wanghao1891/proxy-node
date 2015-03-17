@@ -189,20 +189,6 @@ function getVocabulary() {
 }
 
 function getArticle() {
-//    var req = new XMLHttpRequest();
-//    req.onreadystatechange = function() {
-//        if (req.readyState == 4 && req.status == 200) {
-//	    var center = document.getElementById("vocabulary_detail");
-//	    center.innerHTML = req.responseText;
-//	}
-//    }
-
-    //req.open("GET","file?article/JavaScript-The-Good-Parts.pdf",true);
-    //req.send();
-
-//    var _pdf = document.getElementById("pdf");
-//    _pdf.data = "file?article/JavaScript-The-Good-Parts.pdf";
-
     console.log("start getting article.");
     var req = new XMLHttpRequest();
     req.onreadystatechange = function() {
@@ -224,6 +210,9 @@ function getArticle() {
 
 	    document.getElementById("article_list").innerHTML = content;
 	    console.log("getting article is end.");
+	    
+	    document.getElementById("file_name").value  = "";
+	    document.getElementById("file_upload").value = "";
 	}
     }
     req.open("GET","get-article",true);
