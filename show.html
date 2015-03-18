@@ -22,7 +22,7 @@
     </div>
     <div id='vocabulary_div'>
       <div id='vocabulary_list' class='center-left'></div>
-      <div id='article' class='center-middle'>
+      <div id='article_div' class='center-middle'>
 	Article List
 	<form action="/upload" method="post" enctype="multipart/form-data">
 	  Name: <input id='file_name' type='text' />
@@ -32,6 +32,7 @@
 	<div id='article_list'>	  
 	</div>
       </div>
+      <div id='separator' class='center-separator'><a onclick="showArticleList()"><></a></div>
       <div id='vocabulary_detail' class='center-right'>
 	<!-- <a onclick='getArticle()'>Show</a> -->
 	<object id='pdf' data="file?article/JavaScript-The-Good-Parts.pdf" type="application/pdf" width='100%' height='90%'>

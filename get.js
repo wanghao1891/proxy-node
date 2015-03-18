@@ -244,6 +244,10 @@ function uploadFile() {
     req.send(fd);
 }
 
+function showArticleList() {
+    document.getElementById("article_div").hidden = true;
+}
+
 function init() {
     getVocabulary();
     getArticle();
