@@ -38,13 +38,13 @@ a:hover {
 }
 
 .center-separator {
-    width: 2%;
+    width: 0.8%;
     float: left;
     border:1px solid #000;
 }
 
 .center-right {
-    width: 41%;
+    width: 45.6%;
     float: left;
     border:1px solid #000;
 }

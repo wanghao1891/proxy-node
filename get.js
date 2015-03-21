@@ -245,7 +245,19 @@ function uploadFile() {
 }
 
 function showArticleList() {
-    document.getElementById("article_div").hidden = true;
+    var articleDiv = document.getElementById("article_div");
+    var separatorA = document.getElementById("separator_a");
+    var articleContent = document.getElementById("article_content");
+    
+    if (articleDiv.hidden) {
+	articleDiv.hidden = false;
+	separatorA.innerHTML = "<";
+	articleContent.style.width = "45.6%";
+    } else {
+	articleDiv.hidden = true;
+	separatorA.innerHTML = ">";
+	articleContent.style.width = "63.6%";
+    }
 }
 
 function init() {
