@@ -9,10 +9,10 @@ var filePath = "/root/workspace/proxy-node/";
 function execCommand(res, binary, command){
     command = "cd /root/workspace/database/; petite --script " + command;
     console.log(command);
-    exec(command, {maxBuffer: 2000000*1024*200}, function (error, stdout, stderr) {
-//        console.log("error" + error);
+    exec(command, {maxBuffer: 1024*20000, timeout: 0}, function (error, stdout, stderr) {
+        console.log("error" + error);
 //        console.log("stdout" + stdout);
-//        console.log("stderr" + stderr);
+        console.log("stderr" + stderr);
         var content = "";
 
 	if (error === null) {
