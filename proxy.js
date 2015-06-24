@@ -4,10 +4,10 @@ var spawn = require("child_process").spawn;
 var fs = require("fs");
 var formidable = require('formidable');
 var util = require('util');
-var filePath = "/root/workspace/proxy-node/";
+var filePath = __dirname + "/";
 
 function execCommand(res, binary, command){
-    command = "cd /root/workspace/database/; petite --script " + command;
+  command = "cd "+ __dirname + "/../database/; petite --script " + command;
     console.log(command);
     exec(command, {maxBuffer: 1024*20000, timeout: 0}, function (error, stdout, stderr) {
         console.log("error" + error);
