@@ -33,9 +33,10 @@ function search() {
       searchTextDiv.innerHTML = "The search of " + _value + " is finished.";
 
       if (JSON.parse(req.responseText) === 0) {
+
         getVocabulary();
       } else {
-        var content = "";
+
         var vocabulary = JSON.parse(req.responseText);
 	var name = decodeURIComponent(vocabulary.name);
 	var pronunciation_uk = decodeURIComponent(vocabulary.pronunciation_uk);
@@ -47,12 +48,22 @@ function search() {
 	//process definition for format.
 	definition = definition.replace(/\./g, ".<p>");
 
-	content += "<li><a id='" + name + "-li' onmouseover=\"play('" + sound_uk + "')\" onclick=\"getVocabularyDetail('" + name  +  "')\">" + name + "</a>" + " [<a onclick=\"play('" + sound_uk  + "')\">BrE</a> /" + pronunciation_uk  + "/&nbsp<a onclick=\"play('" + sound_us + "')\">NAmE</a> /" + pronunciation_us  + "/]</li>";
-	content += "<div id='" + name + "' style='border:1px solid #000' hidden='true'>" + definition  + "</div>";
-        content += "</ol>";
+	var li_content = "<a id='" + name + "-li' onmouseover=\"play('" + sound_uk + "')\" onclick=\"getVocabularyDetail('" + name  +  "')\">" + name + "</a>" + " [<a onclick=\"play('" + sound_uk  + "')\">BrE</a> /" + pronunciation_uk  + "/&nbsp<a onclick=\"play('" + sound_us + "')\">NAmE</a> /" + pronunciation_us  + "/]";
+	var div_content = "<div id='" + name + "' style='border:1px solid #000' hidden='true'>" + definition  + "</div>";
 
-        content += document.getElementById("vocabulary_list").innerHTML;
-        document.getElementById("vocabulary_list").innerHTML = content;
+        var vocabulary_ol = document.getElementById("vocabulary-ol");
+        var first_node = vocabulary_ol.firstChild;
+        var li_node = document.createElement("li");
+        //node.id = name + "-li";
+        //node.setAttribute("onmouseover", "play('" + sound_uk +  "')");
+        li_node.innerHTML = li_content;
+
+        var div_node = document.createElement("div");
+        div_node.innerHTML = div_content;
+
+        //        vocabulary_ol.appendChild(node);
+        vocabulary_ol.insertBefore(div_node, first_node);
+        vocabulary_ol.insertBefore(li_node, div_node);
       }
 
       searchTextField.value = "";
@@ -187,7 +198,7 @@ function getVocabulary() {
     if (req.readyState == 4 && req.status == 200){
 
       var vocabularyObj = JSON.parse(req.responseText);
-      var content = "<ol reversed>";
+      var content = "<ol id='vocabulary-ol' reversed>";
 
       for (i=0; i<vocabularyObj.vocabulary.length-1; i++) {
 
