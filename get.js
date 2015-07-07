@@ -54,14 +54,12 @@ function search() {
         var vocabulary_ol = document.getElementById("vocabulary-ol");
         var first_node = vocabulary_ol.firstChild;
         var li_node = document.createElement("li");
-        //node.id = name + "-li";
-        //node.setAttribute("onmouseover", "play('" + sound_uk +  "')");
+
         li_node.innerHTML = li_content;
 
         var div_node = document.createElement("div");
         div_node.innerHTML = div_content;
 
-        //        vocabulary_ol.appendChild(node);
         vocabulary_ol.insertBefore(div_node, first_node);
         vocabulary_ol.insertBefore(li_node, div_node);
       }
