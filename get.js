@@ -96,6 +96,9 @@ function getRelative(_value) {
 
       relativeDiv.innerHTML = relativeList;
       relativeDiv.hidden = false;
+
+      index = -1;
+      length = 0;
     }
   };
 
@@ -120,7 +123,7 @@ function query(event) {
   case 38: //KeyUp
     selectItem(searchTextField, function() {
       if (index < 1) {//when the position is in bottom and top.
-	index = length -1
+	index = length -1;
       } else {
 	index -= 1;
       }
@@ -147,7 +150,7 @@ function selectItem(searchTextField, processIndex) {
   var _elements = document.getElementsByName("relative");
   length = _elements.length;
 
-  var _pre, cur;
+  var _pre, _cur;
 
   if (index != -1) {
     _pre = _elements[index];
@@ -157,7 +160,7 @@ function selectItem(searchTextField, processIndex) {
 
   processIndex();
 
-  _cur = _elements[index]
+  _cur = _elements[index];
   _cur.style.color = "blue";
   _cur.style.fontStyle = "italic";
 
