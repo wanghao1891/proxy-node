@@ -275,7 +275,7 @@ function uploadFile() {
       console.log("upload done!");
       getArticle();
     }
-  }
+  };
 
   req.open("POST","upload",true);
   req.send(fd);
@@ -299,5 +299,5 @@ function showArticleList() {
 
 function init() {
   getVocabulary();
-  getArticle();
+  //getArticle();
 }

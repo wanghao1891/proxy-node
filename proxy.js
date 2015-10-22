@@ -204,6 +204,6 @@ http.createServer(function (req, res) {
 
 //	route(req, res, postData);
     });
-}).listen(80, '0.0.0.0');
+}).listen(8080, '0.0.0.0');
 
 console.log('Server running at http://0.0.0.0/');
