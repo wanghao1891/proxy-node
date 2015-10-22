@@ -182,6 +182,8 @@ function route(req, res, postData) {
     }
 }
 
+var port = process.env.PORT || 8000;
+
 http.createServer(function (req, res) {
 //    console.log(req);
 //    url = require('url').parse(req.url);
@@ -204,6 +206,6 @@ http.createServer(function (req, res) {
 
 //	route(req, res, postData);
     });
-}).listen(8080, '0.0.0.0');
+}).listen(port, '0.0.0.0');
 
-console.log('Server running at http://0.0.0.0/');
+console.log('Server running at http://0.0.0.0' + ':' + port);
