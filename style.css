@@ -26,7 +26,8 @@ a:hover {
 }
 
 .center-left {
-    width: 35%;
+    //width: 35%;
+    width: 100%;
     float: left;
     border:1px solid #000;
 }
